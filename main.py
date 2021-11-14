@@ -1,5 +1,7 @@
 import pandas as pd
 import math
+import matplotlib.pyplot as plt
+from matplotlib.animation import FuncAnimation
 
 data = pd.read_csv("customer_data.csv")
 
@@ -67,5 +69,17 @@ def start_iteration(data):
         old_coord = new_coord
 
     print("Stop criteria reached.")
+
+def plot_data(data):
+    fig = plt.figure(figsize=(13,6))
+    ax = fig.add_subplot(111)
+    #line1, = ax.plot()
+    plt.scatter(data['x'], data['y'])
+    plt.show()
+
+def func_animate(i):
+    pass
+
+plot_data(data)
 
 start_iteration(data)
