@@ -25,29 +25,47 @@ def check_criteria(x_1, y_1, x_2, y_2, alpha):
         return False
 
 def calc_new_coord(x, y, data):
-    dist = [math.sqrt((row['x']-x)**2 + (row['y']-y)**2) for index, row in data.iterrows()]
+    x_counter = [(row['x']*row['demand'])/(math.sqrt((row['x']-x)**2 + (row['y']-y)**2)) for index, row in data.iterrows()]
 
-    counter_x = [row['x']*row['demand'] for index, row in data.iterrows()]
+    y_counter = [(row['y']*row['demand'])/(math.sqrt((row['x']-x)**2 + (row['y']-y)**2)) for index, row in data.iterrows()]
 
-    denom = [row['demand'] for index, row in data.iterrows()]
+    denominator = [row['demand']/(math.sqrt((row['x']-x)**2 + (row['y']-y)**2)) for index, row in data.iterrows()]
 
-    counter_y = [row['y']*row['demand'] for index, row in data.iterrows()]
+    x_new = sum(x_counter)/sum(denominator)
 
-    x_new = (sum(counter_x)/sum(dist))/(sum(denom)/sum(dist))
+    y_new = sum(y_counter)/sum(denominator)
 
-    y_new = (sum(counter_y)/sum(dist))/(sum(denom)/sum(dist))
+    new_coord = [x_new, y_new]
 
-    print("new x: " + str(x_new))
-    print("new y: " + str(y_new))
+    return new_coord
 
-alpha = 0.001
+def start_iteration(data):
 
-x_0 = get_start_coord('x', data)
-y_0 = get_start_coord('y', data)
-
-calc_new_coord(x_0, y_0, data)
-
-distance = calc_target_value(x_0, y_0, data)
+    #start parameters for stop criteria
+    #difference must be larger than alpha
+    difference = 100
+    alpha = 0.001
 
 
+    x_0 = get_start_coord('x', data)
+    y_0 = get_start_coord('y', data)
 
+    old_coord = [x_0, y_0]
+    iter_count = 1
+
+    while difference >= alpha :
+        new_coord = calc_new_coord(x_0, y_0, data)
+        x_diff = abs(new_coord[0]-old_coord[0])
+        y_diff = abs(new_coord[1] - old_coord[1])
+        difference = max(x_diff, y_diff)
+
+        print("Iteration " + str(iter_count) + " with x,y= " +str(new_coord) + " and target value= " + str(calc_target_value(new_coord[0], new_coord[1], data)))
+        iter_count += 1
+
+        old_coord = new_coord
+
+        if iter_count == 25:
+            break
+    print("Stop criteria reached.")
+
+start_iteration(data)
