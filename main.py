@@ -3,7 +3,7 @@ import math
 
 data = pd.read_csv("customer_data.csv")
 
-print(data)
+print("Input data set:\n" + str(data))
 
 def get_start_coord(coord, data):
     counter_values=[row[coord]*row['demand'] for index, row in data.iterrows()]
@@ -31,9 +31,9 @@ def calc_new_coord(x, y, data):
 
     denominator = [row['demand']/(math.sqrt((row['x']-x)**2 + (row['y']-y)**2)) for index, row in data.iterrows()]
 
-    x_new = sum(x_counter)/sum(denominator)
+    x_new = round(sum(x_counter)/sum(denominator), 3)
 
-    y_new = sum(y_counter)/sum(denominator)
+    y_new = round(sum(y_counter)/sum(denominator), 3)
 
     new_coord = [x_new, y_new]
 
@@ -54,9 +54,11 @@ def start_iteration(data):
     iter_count = 1
 
     while difference >= alpha :
-        new_coord = calc_new_coord(x_0, y_0, data)
-        x_diff = abs(new_coord[0]-old_coord[0])
+        new_coord = calc_new_coord(old_coord[0], old_coord[1], data)
+
+        x_diff = abs(new_coord[0] - old_coord[0])
         y_diff = abs(new_coord[1] - old_coord[1])
+
         difference = max(x_diff, y_diff)
 
         print("Iteration " + str(iter_count) + " with x,y= " +str(new_coord) + " and target value= " + str(calc_target_value(new_coord[0], new_coord[1], data)))
@@ -64,8 +66,6 @@ def start_iteration(data):
 
         old_coord = new_coord
 
-        if iter_count == 25:
-            break
     print("Stop criteria reached.")
 
 start_iteration(data)
