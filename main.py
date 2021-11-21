@@ -2,6 +2,7 @@ import pandas as pd
 import math
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
+import time
 
 data = pd.read_csv("customer_data.csv")
 
@@ -74,23 +75,26 @@ def start_iteration(data):
     print("Stop criteria reached.")
 
 def plot_data(data):
-    fig = plt.figure(figsize=(13,6))
+    fig = plt.figure()
+    global ax
     ax = fig.add_subplot(111)
     #line1, = ax.plot()
     plt.scatter(data['x'], data['y'])
-    plt.show()
+
     ani = animation.FuncAnimation(fig, animate, interval=1000)
+
+    plt.show()
 
 def animate(i):
     coordinates = solution_list
-
     ax.clear()
-    for coord in coordinates:
-        ax.plot(coord)
-
-plot_data(data)
+    for index in range(0, len(coordinates)):
+        ax.scatter(coordinates[index][0], coordinates[index][1], c="r")
+        ax.annotate(index+1, (coordinates[index][0], coordinates[index][1]))
 
 global solution_list
 solution_list = []
 
 start_iteration(data)
+
+plot_data(data)
