@@ -80,8 +80,6 @@ def plot_data(data):
     fig = plt.figure()
     global ax
     ax = fig.add_subplot(111)
-    #line1, = ax.plot()
-    plt.scatter(data['x'], data['y'])
 
     ani = animation.FuncAnimation(fig, animate, interval=100)
 
@@ -90,6 +88,7 @@ def plot_data(data):
 def animate(i):
     coordinates = solution_list
     ax.clear()
+    ax.scatter(data['x'], data['y'])
     for index in range(0, len(coordinates)):
         ax.scatter(coordinates[index][0], coordinates[index][1], c="r")
         ax.annotate(index+1, (coordinates[index][0], coordinates[index][1]))
