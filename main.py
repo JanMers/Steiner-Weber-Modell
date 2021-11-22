@@ -3,6 +3,7 @@ import math
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 import time
+import threading
 
 data = pd.read_csv("customer_data.csv")
 
@@ -57,6 +58,7 @@ def start_iteration(data):
     iter_count = 1
 
     while difference >= alpha :
+        time.sleep(1)
         new_coord = calc_new_coord(old_coord[0], old_coord[1], data)
 
         x_diff = abs(new_coord[0] - old_coord[0])
@@ -81,7 +83,7 @@ def plot_data(data):
     #line1, = ax.plot()
     plt.scatter(data['x'], data['y'])
 
-    ani = animation.FuncAnimation(fig, animate, interval=1000)
+    ani = animation.FuncAnimation(fig, animate, interval=100)
 
     plt.show()
 
@@ -95,6 +97,12 @@ def animate(i):
 global solution_list
 solution_list = []
 
-start_iteration(data)
+def start_threads(data):
 
-plot_data(data)
+    t1 = threading.Thread(target=start_iteration, args=(data,))
+    t1.start()
+
+    t2 = threading.Thread(target=plot_data, args=(data,))
+    t2.start()
+
+start_threads(data)
