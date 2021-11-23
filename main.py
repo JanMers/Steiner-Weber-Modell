@@ -9,6 +9,9 @@ data = pd.read_csv("customer_data.csv")
 
 print("Input data set:\n" + str(data))
 
+global solution_list
+solution_list = [[0,0]]
+
 def get_start_coord(coord, data):
     counter_values=[row[coord]*row['demand'] for index, row in data.iterrows()]
 
@@ -86,15 +89,13 @@ def plot_data(data):
     plt.show()
 
 def animate(i):
-    coordinates = solution_list
     ax.clear()
     ax.scatter(data['x'], data['y'])
-    for index in range(0, len(coordinates)):
-        ax.scatter(coordinates[index][0], coordinates[index][1], c="r")
-        ax.annotate(index+1, (coordinates[index][0], coordinates[index][1]))
 
-global solution_list
-solution_list = []
+    coordinates = solution_list[-1]
+
+    ax.scatter(coordinates[0], coordinates[1], c="r")
+    ax.annotate(len(solution_list)-1, (coordinates[0], coordinates[1]))
 
 def start_threads(data):
 
