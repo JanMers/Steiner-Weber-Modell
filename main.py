@@ -92,6 +92,9 @@ def animate(i):
     ax.clear()
     ax.scatter(data['x'], data['y'])
 
+    for index, row in data.iterrows():
+        ax.annotate(' d=' + str(row['demand']), (row['x'], row['y']))
+
     coordinates = solution_list[-1]
 
     ax.scatter(coordinates[0], coordinates[1], c="r")
