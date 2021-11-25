@@ -1,3 +1,3 @@
 # Miehle-Algorithm-Implementation
 
-![](/Animation/plot.gif)
+![Plot](https://github.com/JanMers/Miehle-Algorithm-Implementation/blob/master/animation/plot.gif)
